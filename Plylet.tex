@@ -1,0 +1,39 @@
+\documentclass{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\begin{document}
+
+The unit type is built in. Because this is not dependently typed, we can place
+values and types in two different namespaces. Moreover, we don't even need to
+let the value of unit show up in the surface language. So let's follow the
+convention of using $()$ at both the value and type level.
+
+\[ \frac{}{\Gamma\vdash()\mathbin{:}()}\quad\text{(Unit)} \]
+
+Implicit coercion ($\leadsto$) is, after type-of ($:$), a second kind of
+judgment. Coercions are useful on input types of functions; implicit coercions
+are supported via applications in such a first-class manner that we actually
+back it into the application rule.
+
+\[ \frac{\Gamma\vdash f\mathbin{:}\alpha\to\beta\quad\Gamma\vdash x\mathbin{:}\gamma\quad\Gamma\vdash \gamma\leadsto\alpha}{\Gamma\vdash f~x\mathbin{:}\beta}\quad\text{(Function application)} \]
+
+The obvious and immediate difficulty is, if you have
+$f\mathbin{:}\alpha\to\beta$ and $x\mathbin{:}\beta$, how do you apply that?
+Whereas the purpose of coercions is to give us a flexible framework for typesafe
+function anpplication, we want to make this base case always possible, so we
+introduce a rule for coercion reflexivity. However we don't want to introduce
+any complex system for saying ``we have a type in the environment'', so instead
+we define the rule in this form, which is simple (in terms of not requiring any
+more constructs be introduced into the system) and useful (in that it is
+immediately applicable at the point that you actually need it).
+
+\[ \frac{\Gamma\vdash x\mathbin{:}\alpha}{\Gamma\vdash \alpha\leadsto\alpha}\quad\text{(Coercion reflexivity)} \]
+
+%\[ \frac{c \text{ is a constant of type } T}{\Gamma\vdash c\mathbin{:}T} \]
+%\[ \frac{\Gamma,x\mathbin{:}\sigma\vdash e\mathbin{:}\tau}{\Gamma\vdash (\lambda x\mathbin{:}\sigma.~e)\mathbin{:}(\sigma \to \tau)} \]
+%\[ \frac{\Gamma\vdash e_1\mathbin{:}\sigma\to\tau\quad\Gamma\vdash e_2\mathbin{:}\sigma}{\Gamma\vdash e_1~e_2\mathbin{:}\tau} \]
+
+\end{document}
+
