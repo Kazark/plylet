@@ -8,28 +8,33 @@
 The unit type is built in. Because this is not dependently typed, we can place
 values and types in two different namespaces. Moreover, we don't even need to
 let the value of unit show up in the surface language. So let's follow the
-convention of using $()$ at both the value and type level.
+convention of using empty tuple syntax $()$ at both the value and type level.
 
 \[ \frac{}{\Gamma\vdash()\mathbin{:}()}\quad\text{(Unit)} \]
 
 Implicit coercion ($\leadsto$) is, after type-of ($:$), a second kind of
 judgment. Coercions are useful on input types of functions; implicit coercions
 are supported via applications in such a first-class manner that we actually
-back it into the application rule.
+bake it into the application rule.
 
 \[ \frac{\Gamma\vdash f\mathbin{:}\alpha\to\beta\quad\Gamma\vdash x\mathbin{:}\gamma\quad\Gamma\vdash \gamma\leadsto\alpha}{\Gamma\vdash f~x\mathbin{:}\beta}\quad\text{(Function application)} \]
 
 The obvious and immediate difficulty is, if you have
-$f\mathbin{:}\alpha\to\beta$ and $x\mathbin{:}\beta$, how do you apply that?
+$f\mathbin{:}\alpha\to\beta$ and $x\mathbin{:}\alpha$, how do you apply that?
 Whereas the purpose of coercions is to give us a flexible framework for typesafe
-function anpplication, we want to make this base case always possible, so we
+function application, we want to make this base case always possible, so we
 introduce a rule for coercion reflexivity. However we don't want to introduce
 any complex system for saying ``we have a type in the environment'', so instead
 we define the rule in this form, which is simple (in terms of not requiring any
-more constructs be introduced into the system) and useful (in that it is
+more constructs to be introduced into the system) and useful (in that it is
 immediately applicable at the point that you actually need it).
 
 \[ \frac{\Gamma\vdash x\mathbin{:}\alpha}{\Gamma\vdash \alpha\leadsto\alpha}\quad\text{(Coercion reflexivity)} \]
+
+We also want $\textbf{let}\dots\textbf{in}\dots$ expressions.
+
+\[ \frac{\Gamma\vdash M\mathbin{:}\alpha\quad\Gamma\vdash
+    P[x:=M]\mathbin{:}\beta}{\Gamma\vdash \textbf{let}\, x = M \,\textbf{in}\, P\mathbin{:}\beta}\quad\text{(Let expression)} \]
 
 %\[ \frac{c \text{ is a constant of type } T}{\Gamma\vdash c\mathbin{:}T} \]
 %\[ \frac{\Gamma,x\mathbin{:}\sigma\vdash e\mathbin{:}\tau}{\Gamma\vdash (\lambda x\mathbin{:}\sigma.~e)\mathbin{:}(\sigma \to \tau)} \]
